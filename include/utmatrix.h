@@ -62,6 +62,8 @@ public:
 template <class ValType>
 TVector<ValType>::TVector(int s, int si)
 {
+	if (s < 0) throw logic_error("negative size ");
+	if (si < 0) throw logic_error("negative start index ");
 	Size = s;
 	StartIndex = si;
 	pVector = new ValType[Size];
@@ -74,6 +76,7 @@ TVector<ValType>::TVector(int s, int si)
 template <class ValType> //конструктор копирования
 TVector<ValType>::TVector(const TVector<ValType>& v)
 {
+	if (v.Size < 0) throw logic_error("negative copy size !");
 	Size = v.Size;
 	StartIndex = v.StartIndex;
 	pVector = new ValType[Size];
@@ -234,7 +237,7 @@ ValType TVector<ValType>::operator*(const TVector<ValType>& v)
 		return sum;
 	}
 	else
-		cout << "different size";
+		throw logic_error("defferint size");
 } /*-------------------------------------------------------------------------*/
 
 
@@ -316,6 +319,7 @@ bool TMatrix<ValType>::operator==(const TMatrix<ValType>& mt) const
 template <class ValType> // сравнение
 bool TMatrix<ValType>::operator!=(const TMatrix<ValType>& mt) const
 {
+	if (Size < 0 || mt.Size <= 0) throw logic_error("negative  length");
 	if (Size != mt.Size)
 	{
 		return true;
@@ -336,6 +340,8 @@ bool TMatrix<ValType>::operator!=(const TMatrix<ValType>& mt) const
 template <class ValType> // присваивание
 TMatrix<ValType>& TMatrix<ValType>::operator=(const TMatrix<ValType>& mt)
 {
+	if (mt.Size < 0) throw logic_error("negative length");
+	if (this->Size < 0) throw logic_error("negative length");
 	if (this != &mt)
 	{
 		if (Size != mt.Size)
@@ -344,6 +350,7 @@ TMatrix<ValType>& TMatrix<ValType>::operator=(const TMatrix<ValType>& mt)
 			Size = mt.Size;
 			pVector = new TVector<ValType>[Size];
 		}
+
 		for (int i = 0; i < Size; i++)
 		{
 			pVector[i] = mt.pVector[i];
@@ -367,6 +374,7 @@ TMatrix<ValType> TMatrix<ValType>::operator+(const TMatrix<ValType>& mt)
 	else
 	{
 		cout << "Invalid array size";
+		throw logic_error("invalid array size ");
 	}
 } /*-------------------------------------------------------------------------*/
 
@@ -385,6 +393,7 @@ TMatrix<ValType> TMatrix<ValType>::operator-(const TMatrix<ValType>& mt)
 	else
 	{
 		cout << "Invalid array size";
+		throw logic_error("Invalid array size");
 	}
 } /*-------------------------------------------------------------------------*/
 
